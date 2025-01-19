@@ -36,6 +36,8 @@ class TopAdmin(admin.ModelAdmin):
 def rating_distribution(sender, instance, created, **kwargs):
     if created:
         game = Game.objects.get(id=instance.game_id)
+        person = Person.objects.get(id=instance.person_id)
+
         count = Top.objects.filter(game_id=game.id).count()
         if game.quantity <= count:
             for i in range(1, count+1):
@@ -44,6 +46,8 @@ def rating_distribution(sender, instance, created, **kwargs):
                     if i == j:
                         continue
                     avg_score = avg_score + Person.objects.get(id=(Top.objects.get(game_id=instance.game_id, place=j)).person_id).score
+                game.avg_score = (avg_score + person.score) / count+1
+                game.save()
                 avg_score = avg_score/(count-1)
                 print(avg_score)
                 p = Person.objects.get(id=(Top.objects.get(game_id=instance.game_id, place=i)).person_id)
@@ -66,6 +70,7 @@ def rating_distribution(sender, instance, created, **kwargs):
                 p.score = new_score
                 p.save()
                 instance.score_gamer = new_score
+                instance.save()
 
 
 @receiver(post_save, sender=Person)
