@@ -39,6 +39,9 @@ def rating_distribution(sender, instance, created, **kwargs):
         person = Person.objects.get(id=instance.person_id)
 
         count = Top.objects.filter(game_id=game.id).count()
+
+        instance.score_gamer = person.score
+
         if game.quantity <= count:
             for i in range(1, count+1):
                 avg_score = 0.0
@@ -49,10 +52,8 @@ def rating_distribution(sender, instance, created, **kwargs):
                 game.avg_score = (avg_score + person.score) / count+1
                 game.save()
                 avg_score = avg_score/(count-1)
-                print(avg_score)
                 p = Person.objects.get(id=(Top.objects.get(game_id=instance.game_id, place=i)).person_id)
                 Ea = 1 / (1 + pow(10, (avg_score-p.score)/400))
-                print(Ea)
                 K = 20
                 if (Top.objects.filter(person_id=p.id).count() + 1) >=10:
                     K = 40
@@ -69,8 +70,7 @@ def rating_distribution(sender, instance, created, **kwargs):
                 print(f"{p.first_name} {p.last_name} изменился на: {dop_score}. {p.score} --> {new_score}")
                 p.score = new_score
                 p.save()
-                instance.score_gamer = new_score
-                instance.save()
+            instance.save()
 
 
 @receiver(post_save, sender=Person)

@@ -30,7 +30,7 @@ class Top(models.Model):
                                max_length=10, verbose_name='Игра')
     place = models.IntegerField(verbose_name='Занятое место')
     price = models.IntegerField(null=True, blank=True, verbose_name='Призовые')
-    score_gamer = models.FloatField(verbose_name='Очки игрока после игры', default='100',)
+    score_gamer = models.FloatField(verbose_name='Очки игрока до игры', default='100',)
 
     def __str__(self):
         return f"{self.game}:{self.person}({self.place})"
