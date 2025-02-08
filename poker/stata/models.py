@@ -1,3 +1,4 @@
+import django
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 import datetime
@@ -6,7 +7,7 @@ class Person(models.Model):
     first_name = models.CharField(max_length=30, verbose_name='Имя')
     last_name = models.CharField(max_length=30, null=True, blank=True, verbose_name='Фамилия')
     score = models.FloatField(verbose_name='Рейтинг', default='100',)
-    date_create = models.DateField(verbose_name='Дата добавления', default=datetime.date.today())
+    date_create = models.DateField(verbose_name='Дата добавления', default=django.utils.timezone.now)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -14,7 +15,7 @@ class Person(models.Model):
 
 class Game(models.Model):
     id = models.AutoField(primary_key=True)
-    date = models.DateField(verbose_name='Дата игры', default=datetime.date.today())
+    date = models.DateField(verbose_name='Дата игры', default=django.utils.timezone.now)
     quantity = models.IntegerField(verbose_name='Количество игроков')
     avg_score = models.FloatField(verbose_name='Средний счет за столом', default='100',)
     comment = models.TextField(verbose_name='Комментарий', null=True, blank=True)
