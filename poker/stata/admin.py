@@ -55,9 +55,7 @@ def rating_distribution(sender, instance, created, **kwargs):
                 p = Person.objects.get(id=(Top.objects.get(game_id=instance.game_id, place=i)).person_id)
                 Ea = 1 / (1 + pow(10, (avg_score-p.score)/400))
                 K = 20
-                if (Top.objects.filter(person_id=p.id).count() + 1) >=10:
-                    K = 40
-                elif p.score > 2400:
+                if p.score > 2400:
                     K = 10
                 if i==count:
                     Sa = 0
