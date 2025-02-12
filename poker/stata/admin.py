@@ -70,7 +70,7 @@ def rating_distribution(sender, instance, created, **kwargs):
                 print(f"{p.first_name} {p.last_name} изменился на: {dop_score}. {p.score} --> {new_score}")
                 p.score = new_score
                 p.save()
-            instance.save()
+        instance.save()
 
 
 @receiver(post_save, sender=Person)
