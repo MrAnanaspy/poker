@@ -34,7 +34,7 @@
   });
 </script>
 
-<canvas id="myStata" style="width:100%;max-width:600px"></canvas>
+<canvas id="myStata" ></canvas>
 
 <script>
   console.log('{{item.game_id}}');
@@ -71,10 +71,8 @@ new Chart("myStata", {
     },
     scales: {
       xAxes: [{
-        type: 'time',
-        time: {
-          unit: 'day',
-          tooltipFormat: 'MMM DD'
+        ticks: {
+          beginAtZero: true
         }
       }],
       yAxes: [{
