@@ -8,7 +8,7 @@
   const ctx = document.getElementById('myChart');
   const ar_name = [];
   const ar_score = [];
-  {% for item in persons%}
+  {% for item in persons_score%}
   ar_name.push('{{item.first_name}} {{item.last_name}}')
   ar_score.push('{{item.score}}')
   console.log('{{item.first_name}}');

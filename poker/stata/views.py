@@ -4,8 +4,9 @@ from .models import Top, Person, Game
 
 
 def get_index(request):
-    persons = Person.objects.all().order_by('-score').values()
+    persons_score = Person.objects.all().order_by('-score').values()
+    persons = Person.objects.all().order_by('id').values()
     tops = Top.objects.all()
     for i in tops:
         print(i.game.date)
-    return render(request, "index.html", context={'persons':persons, 'tops':tops}) #, context={'exel':data}
+    return render(request, "index.html", context={'persons':persons, 'persons_score':persons_score, 'tops':tops}) #, context={'exel':data}
