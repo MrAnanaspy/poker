@@ -9,17 +9,17 @@
   const ar_name = [];
   const ar_score = [];
   {% for item in data%}
-  ar_name.push({{item.first_name}})
-  ar_score.push({{item.score}})
-  console.log({{item.first_name}});
-  console.log(ar_name);
+  ar_name.push('{{item.first_name}}')
+  ar_score.push('{{item.score}}')
+  console.log('{{item.first_name}}');
+  console.log('ar_name');
   {% endfor %}
   new Chart(ctx, {
     type: 'bar',
     data: {
       labels: ar_name,
       datasets: [{
-        label: '# of Votes',
+        label: 'Рейтинг',
         data: ar_score,
         borderWidth: 1
       }]
