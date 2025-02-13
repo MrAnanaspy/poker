@@ -8,8 +8,8 @@
   const ctx = document.getElementById('myChart');
   const ar_name = [];
   const ar_score = [];
-  {% for item in data%}
-  ar_name.push('{{item.first_name}}')
+  {% for item in persons%}
+  ar_name.push('{{item.first_name}} {{item.last_name}}')
   ar_score.push('{{item.score}}')
   console.log('{{item.first_name}}');
   console.log('ar_name');
@@ -32,4 +32,67 @@
       }
     }
   });
+</script>
+
+<canvas id="myStata" style="width:100%;max-width:600px"></canvas>
+
+<script>
+  console.log('{{item.game_id}}');
+const data = [
+{% for item in tops%}
+  { date: '{{item.game}}', person: '{{item.person.first_name}} {{item.person.last_name}}', score: {{item.score_gamer}} },
+ {% endfor %}
+ {% for item in persons%}
+  { date: 'Сейчас', person: '{{item.first_name}} {{item.last_name}}', score: {{item.score}} },
+ {% endfor %}
+];
+ console.log(data);
+
+new Chart("myStata", {
+  type: 'line',
+  data: {
+    datasets: [
+    {% for item in persons%}
+      {
+        label: '{{item.first_name}} {{item.last_name}}',
+        fill: false,
+        lineTension: 0.5,
+        borderColor: getRandomColor(),
+        borderWidth: 2,
+        data: data.filter(o => o.person == '{{item.first_name}} {{item.last_name}}').map(o => ({ x: o.date, y: o.score }))
+      },
+      {% endfor %}
+    ]
+  },
+  options: {
+    responsive: true,
+    title: {
+      display: false
+    },
+    scales: {
+      xAxes: [{
+        type: 'time',
+        time: {
+          unit: 'day',
+          tooltipFormat: 'MMM DD'
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    }
+  }
+});
+
+  function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
 </script>
