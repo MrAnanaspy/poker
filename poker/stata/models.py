@@ -7,6 +7,7 @@ class Person(models.Model):
     first_name = models.CharField(max_length=30, verbose_name='Имя')
     last_name = models.CharField(max_length=30, null=True, blank=True, verbose_name='Фамилия')
     score = models.FloatField(verbose_name='Рейтинг', default='100',)
+    telegram_id = models.CharField(max_length=30, null=True, blank=True, verbose_name='id_tg')
     date_create = models.DateField(verbose_name='Дата добавления', default=django.utils.timezone.now)
 
     def __str__(self):
@@ -35,3 +36,13 @@ class Top(models.Model):
 
     def __str__(self):
         return f"{self.game}:{self.person}({self.place})"
+
+class Going(models.Model):
+    pers = models.ForeignKey(Person, related_name='pers', on_delete=models.CASCADE,
+                            max_length=10, verbose_name='Игрок')
+    gam = models.ForeignKey(Game, related_name='gam', on_delete=models.CASCADE,
+                               max_length=10, verbose_name='Игра')
+    comment = models.TextField(verbose_name='Комментарий', null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.gam}:{self.pers}"

@@ -1,9 +1,15 @@
+import telebot
 from django.contrib import admin
 from django.db.models import Avg
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 import datetime
+
+from telebot import types
+
 from .models import Top, Person, Game
+
+bot = telebot.TeleBot('8038800150:AAEzqdqzcXZps-GgX50GxnKAVdYos6wGqWY');
 
 
 # Register your models here.
@@ -76,3 +82,19 @@ def add_date(sender, instance, created, **kwargs):
     if created:
         if not instance.date_create:
             instance.date_create = datetime.date.today()
+
+@receiver(post_save, sender=Game)
+def message_bot(sender, instance, created, **kwargs):
+    if created:
+        person = Person.objects.all()
+        for p in person:
+            if p.telegram_id:
+                keyboard = types.InlineKeyboardMarkup()  # наша клавиатура
+                key_yes = types.InlineKeyboardButton(text='Приду', callback_data='go')  # кнопка «Да»
+                keyboard.add(key_yes)  # добавляем кнопку в клавиатуру
+                key_so = types.InlineKeyboardButton(text='Приду, но опаздаю', callback_data='so')  # кнопка «Да»
+                keyboard.add(key_so)  # добавляем кнопку в клавиатуру
+                key_no = types.InlineKeyboardButton(text='Не приду', callback_data='stop')
+                keyboard.add(key_no)
+                question = 'Придешь на игру ' + str(instance) + '?'
+                bot.send_message(p.telegram_id, text=question, reply_markup=keyboard)
