@@ -36,7 +36,7 @@ class TopAdmin(admin.ModelAdmin):
     list_display = ('id', 'person', 'game', 'place', 'price', 'score_gamer')
     readonly_fields = ['score_gamer',]
     list_filter = ('person', 'place', 'price')
-    raw_id_fields = ['game', ]
+    raw_id_fields = ['game', 'person']
 
 
 @receiver(post_save, sender=Top)

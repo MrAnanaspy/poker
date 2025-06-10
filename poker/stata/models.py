@@ -13,6 +13,9 @@ class Person(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
+    class Meta:
+        ordering = ['first_name']
+
 
 class Game(models.Model):
     id = models.AutoField(primary_key=True)
